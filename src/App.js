@@ -6,6 +6,9 @@ import {
   Select,
   Card,
   CardContent,
+  Paper,
+  Tab,
+  Tabs,
 } from "@material-ui/core";
 import InfoBox from "./InfoBox";
 import Table from "./Table";
@@ -18,6 +21,7 @@ function App() {
   const [countryInfo, setCountryInfo] = useState([]);
   const [tableData, setTableData] = useState([]);
   const ENDPOINT = "https://disease.sh/v3/covid-19";
+  const [tabIndex, settabIndex] = useState(1);
 
   useEffect(() => {
     fetch(`${ENDPOINT}/all`)
@@ -36,7 +40,7 @@ function App() {
             name: country.country,
             value: country.countryInfo.iso2,
           }));
-          const sortedData = sortData(data);
+          const sortedData = sortData(data, "cases");
           setTableData(sortedData);
           setCountries(countries);
         });
@@ -46,7 +50,6 @@ function App() {
 
   const onCountryChange = async (event) => {
     const countryCode = event.target.value;
-    console.log(countryCode, event.target);
     setCountry(countryCode);
 
     const url =
@@ -60,61 +63,91 @@ function App() {
         setCountryInfo(data);
       });
   };
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`scrollable-auto-tabpanel-${index}`}
+        aria-labelledby={`scrollable-auto-tab-${index}`}
+        {...other}
+      >
+        {value === index && children}
+      </div>
+    );
+  }
 
   return (
     <div className="app">
       <div className="app__header">
-        <section class="section ">
-          <p class="mp">
+        <section className="section ">
+          <p className="mp">
             <span>COVID Tracker</span>
           </p>
         </section>
       </div>
 
       <div className="app_tables">
-        <div className="container">
-          <InfoBox title="Total Cases" icon="users" total={countryInfo.cases} />
-
-          <InfoBox
-            title="Recovered"
-            icon="child"
-            total={countryInfo.recovered}
-          />
-
-          <InfoBox title="Deaths" icon="proc" total={countryInfo.deaths} />
-
-          <InfoBox
-            title="New Cases Today"
-            icon="bell"
-            total={countryInfo.todayCases}
-          />
-        </div>
-
-        {/*DROPDOWN*/}
-        <div className="dropdown__container">
+        <div className="app__left">
           <FormControl className="app__dropdown">
             <Select
               className="dropdown__select"
               variant="outlined"
               onChange={onCountryChange}
               value={country}
+              autoWidth={true}
             >
               <MenuItem value="worldwide">Worldwide</MenuItem>
               {countries.map((country) => (
                 <MenuItem value={country.value}>
-                  <Flag country={country.value} /> <p> </p> {country.name}
+                  <Flag country={country.value} /> {country.name}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-        </div>
+          <div className="card card-stats">
+            <InfoBox
+              title="Total Cases"
+              icon="users"
+              total={countryInfo.cases}
+            />
 
-        {/*INFO BOX*/}
-        <div>
-          <Card className="app__right">
-            <CardContent>
-              <h1>Total Cases by Country</h1>
-              <Table countries={tableData} />
+            <InfoBox
+              title="Recovered"
+              icon="child"
+              total={countryInfo.recovered}
+            />
+
+            <InfoBox title="Deaths" icon="proc" total={countryInfo.deaths} />
+
+            <InfoBox
+              title="New Cases Today"
+              icon="bell"
+              total={countryInfo.todayCases}
+            />
+          </div>
+        </div>
+        {/*TABLE*/}
+        <div className="app__right">
+          <Card>
+            <CardContent className="card_content">
+              <h1>Cases by Country</h1>
+              <Paper className="tab">
+                <Tabs
+                  value={tabIndex}
+                  onChange={(e, v) => settabIndex(v)}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  centered
+                >
+                  <Tab label="Total" />
+                  <Tab label="Recovered" />
+                  <Tab label="Deaths" />
+                </Tabs>
+              </Paper>
+              <Table countries={tableData} index={tabIndex} />
             </CardContent>
           </Card>
         </div>

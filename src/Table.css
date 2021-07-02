@@ -1,8 +1,10 @@
 .table {
   margin-top: 20px;
-  overflow: scroll;
-  height: 400px;
+  overflow-y: auto;
   color: #6a5d5d;
+  height: 70vh;
+  scrollbar-color: gray;
+  scrollbar-width: thin;
 }
 
 .table tr {

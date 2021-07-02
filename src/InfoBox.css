@@ -40,6 +40,7 @@ h6 {
 
 .font-weight-bold {
   font-weight: 700 !important;
+  font-size: medium;
 }
 
 h1.title {
@@ -49,39 +50,29 @@ h1.title {
   margin: 1rem 0;
 }
 
-.col {
-  max-width: 100%;
-  flex-basis: 0;
-  flex-grow: 1;
-  padding: 5px;
-}
-
-.card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  word-wrap: break-word;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  background-color: #fff;
-  background-clip: border-box;
-  border: 0;
-  box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
-  border-radius: 15px;
-  margin: 10px;
-  font-family: "Open Sans", sans-serif;
+.full__width {
+  min-width: 100%;
 }
 
 .card-body {
   min-height: 1px;
   padding: 1.5rem;
   display: flex;
+  margin: 0.5rem 0;
   padding: 1rem 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  background-clip: border-box;
+  border: 0;
+  box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
   border-radius: 15px;
+  position: relative;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .card-body .h2 {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .icon {
@@ -98,6 +89,9 @@ h1.title {
   border-radius: 50%;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }
 
 .icon-shape .icon,
